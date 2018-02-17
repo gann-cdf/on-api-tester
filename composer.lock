@@ -1,0 +1,473 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "a5987d418b38afb2d066c74b4ad7b29e",
+    "packages": [
+        {
+            "name": "battis/bootstrapsmarty",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/battis/bootstrapsmarty.git",
+                "reference": "e0a71cce1dd285ad11a64fd70495f802ff75ae00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/battis/bootstrapsmarty/zipball/e0a71cce1dd285ad11a64fd70495f802ff75ae00",
+                "reference": "e0a71cce1dd285ad11a64fd70495f802ff75ae00",
+                "shasum": ""
+            },
+            "require": {
+                "battis/data-utilities": "~0.1",
+                "bower-asset/bootstrap-colorpicker-2.x": "~2.3",
+                "bower-asset/bootstrap-datepicker-1.x": "~1.6",
+                "bower-asset/bootstrap-sortable-2.x": "~2.0",
+                "fxp/composer-asset-plugin": "^1.1",
+                "smarty/smarty": "~3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Battis\\BootstrapSmarty\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Seth Battis",
+                    "email": "seth@battis.net"
+                }
+            ],
+            "description": "A wrapper for Smarty to set (and maintain) defaults within a Bootstrap UI environment",
+            "time": "2017-05-24T17:21:18+00:00"
+        },
+        {
+            "name": "battis/data-utilities",
+            "version": "v0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/battis/data-utilities.git",
+                "reference": "81e9771db3f3cfa1a757179ad447ee40703c55a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/battis/data-utilities/zipball/81e9771db3f3cfa1a757179ad447ee40703c55a3",
+                "reference": "81e9771db3f3cfa1a757179ad447ee40703c55a3",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Battis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Seth Battis",
+                    "email": "sethbattis@stmarksschool.org"
+                }
+            ],
+            "description": "A handful of useful helper functions to process data",
+            "time": "2017-05-29T18:41:18+00:00"
+        },
+        {
+            "name": "bower-asset/bootstrap-colorpicker-2.x",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/farbelous/bootstrap-colorpicker.git",
+                "reference": "db978b4d8c3436cdaed6e3a1a065f9f47bb686b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/farbelous/bootstrap-colorpicker/zipball/db978b4d8c3436cdaed6e3a1a065f9f47bb686b1",
+                "reference": "db978b4d8c3436cdaed6e3a1a065f9f47bb686b1",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.10"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/css/bootstrap-colorpicker.css",
+                    "dist/js/bootstrap-colorpicker.js"
+                ],
+                "bower-asset-ignore": [
+                    "\\.*",
+                    "/index.html",
+                    "/package.json",
+                    "/composer.json",
+                    "/Gruntfile.js",
+                    "/.travis.yml",
+                    "/travis.sh",
+                    "/server.js"
+                ]
+            },
+            "time": "2017-02-05T18:59:49+00:00"
+        },
+        {
+            "name": "bower-asset/bootstrap-datepicker-1.x",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uxsolutions/bootstrap-datepicker.git",
+                "reference": "4c12834aae54782ca41d9409d6334193f200124d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uxsolutions/bootstrap-datepicker/zipball/4c12834aae54782ca41d9409d6334193f200124d",
+                "reference": "4c12834aae54782ca41d9409d6334193f200124d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7.1,<4.0.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/css/bootstrap-datepicker3.css",
+                    "dist/js/bootstrap-datepicker.js"
+                ],
+                "bower-asset-ignore": []
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2017-07-06T12:14:34+00:00"
+        },
+        {
+            "name": "bower-asset/bootstrap-sortable-2.x",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drvic10k/bootstrap-sortable.git",
+                "reference": "0df36e981d102963dd08ac3db8b247e00286600d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drvic10k/bootstrap-sortable/zipball/0df36e981d102963dd08ac3db8b247e00286600d",
+                "reference": "0df36e981d102963dd08ac3db8b247e00286600d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.9.0",
+                "bower-asset/moment": ">=2.3.1"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "Scripts/bootstrap-sortable.js",
+                "bower-asset-ignore": [
+                    "Scripts/moment.min.js"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Adding sorting ability to HTML tables",
+            "keywords": [
+                "bootstrap sortable",
+                "bootstrap-sortable",
+                "sort table",
+                "sortable",
+                "sortable table"
+            ],
+            "time": "2017-03-26T19:09:52+00:00"
+        },
+        {
+            "name": "bower-asset/jquery",
+            "version": "3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jquery/jquery-dist.git",
+                "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/9e8ec3d10fad04748176144f108d7355662ae75e",
+                "reference": "9e8ec3d10fad04748176144f108d7355662ae75e",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "dist/jquery.js",
+                "bower-asset-ignore": [
+                    "package.json"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "keywords": [
+                "browser",
+                "javascript",
+                "jquery",
+                "library"
+            ],
+            "time": "2018-01-20T17:26:57+00:00"
+        },
+        {
+            "name": "bower-asset/moment",
+            "version": "2.20.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "03073778ec18ee38e179208cd1af899e8d1848dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/03073778ec18ee38e179208cd1af899e8d1848dc",
+                "reference": "03073778ec18ee38e179208cd1af899e8d1848dc",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "moment.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "benchmarks",
+                    "bower_components",
+                    "meteor",
+                    "node_modules",
+                    "scripts",
+                    "tasks",
+                    "test",
+                    "component.json",
+                    "composer.json",
+                    "CONTRIBUTING.md",
+                    "ender.js",
+                    "Gruntfile.js",
+                    "Moment.js.nuspec",
+                    "package.js",
+                    "package.json",
+                    "ISSUE_TEMPLATE.md",
+                    "typing-tests",
+                    "min/tests.js"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "time": "2017-12-19T04:36:30+00:00"
+        },
+        {
+            "name": "camspiers/json-pretty",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/camspiers/json-pretty.git",
+                "reference": "17be37cb83af8014658da48fa0012604179039a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/camspiers/json-pretty/zipball/17be37cb83af8014658da48fa0012604179039a7",
+                "reference": "17be37cb83af8014658da48fa0012604179039a7",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Camspiers": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cam Spiers",
+                    "email": "cameron@heyday.co.nz"
+                }
+            ],
+            "description": "Provides support for json pretty printing",
+            "time": "2016-02-06T01:25:58+00:00"
+        },
+        {
+            "name": "fxp/composer-asset-plugin",
+            "version": "v1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/composer-asset-plugin.git",
+                "reference": "61352d99940d2b2392a5d2db83b8c0ef5faf222a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/61352d99940d2b2392a5d2db83b8c0ef5faf222a",
+                "reference": "61352d99940d2b2392a5d2db83b8c0ef5faf222a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "composer/composer": "^1.4.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fxp\\Composer\\AssetPlugin\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "NPM/Bower Dependency Manager for Composer",
+            "homepage": "https://github.com/fxpio/composer-asset-plugin",
+            "keywords": [
+                "asset",
+                "bower",
+                "composer",
+                "dependency manager",
+                "nodejs",
+                "npm",
+                "package"
+            ],
+            "time": "2017-10-20T06:53:56+00:00"
+        },
+        {
+            "name": "nategood/httpful",
+            "version": "0.2.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nategood/httpful.git",
+                "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nategood/httpful/zipball/c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+                "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Httpful": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nate Good",
+                    "email": "me@nategood.com",
+                    "homepage": "http://nategood.com"
+                }
+            ],
+            "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
+            "homepage": "http://github.com/nategood/httpful",
+            "keywords": [
+                "api",
+                "curl",
+                "http",
+                "requests",
+                "rest",
+                "restful"
+            ],
+            "time": "2015-10-26T16:11:30+00:00"
+        },
+        {
+            "name": "smarty/smarty",
+            "version": "v3.1.31",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "c7d42e4a327c402897dd587871434888fde1e7a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/c7d42e4a327c402897dd587871434888fde1e7a9",
+                "reference": "c7d42e4a327c402897dd587871434888fde1e7a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "libs/bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                },
+                {
+                    "name": "Rodney Rehm",
+                    "email": "rodney.rehm@medialize.de"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "http://www.smarty.net",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2016-12-14T21:57:25+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

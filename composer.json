@@ -1,0 +1,21 @@
+{
+    "name": "gann-cdf/on-api-tester",
+    "description": "Test user access to the Blackbaud ON API",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Seth Battis",
+            "email": "sbattis@gannacademy.org"
+        }
+    ],
+    "require": {
+        "nategood/httpful": "^0.2.20",
+        "battis/bootstrapsmarty": "^2.0",
+        "camspiers/json-pretty": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GannCDF\\OnAPITester\\": "src"
+        }
+    }
+}

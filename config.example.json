@@ -1,0 +1,10 @@
+{
+    "api": "https://our-school.myschoolapp.com/api",
+    "placeholders": {
+        "username": "Your school email address"
+    },
+    "debug": {
+        "username": "me@our-school.edu",
+        "password": "2m4ny53cr375"
+    }
+}
