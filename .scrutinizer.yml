@@ -9,11 +9,11 @@ tools:
         config:
             standard: "PSR2"
 
-build:
-    tests:
-        override:
-            -
-                command: 'vendor/bin/phpunit'
-                coverage:
-                    file: 'tests/coverage.clover'
-                    format: 'clover'
+#build:
+#    tests:
+#        override:
+#            -
+#                command: 'vendor/bin/phpunit'
+#                coverage:
+#                    file: 'tests/coverage.clover'
+#                    format: 'clover'
