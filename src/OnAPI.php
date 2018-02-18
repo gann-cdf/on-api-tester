@@ -71,11 +71,11 @@ class OnAPI
     /**
      * Authenticate against the API, storiing both a 20-minute token and the
      * user ID of the user being authenticated
-     * @param \array[string]string $parameters An associative array of
+     * @param string[] $parameters An associative array of
      *      parameters with which to authenticate the current user (presumably
      *      at least `['username' => 'foo@bar.baz', 'password' =>
      *      '2m4ny53cr375']` or equivalent information)
-     * @return array[string]string An associative array describing the API
+     * @return string[] An associative array describing the API
      *      endpoint requested and the output received or an explanation of
      *      which required fields were missing, thus preventing the actual
      *      request from being made
@@ -88,7 +88,7 @@ class OnAPI
 
     /**
      * Unpack an endpoint description into its pattern and URI components
-     * @param string|array[string]string $endpoint Either the endpoint to
+     * @param string|string[] $endpoint Either the endpoint to
      *      request or an associative array of the form `['pattern' =>
      *      'endpoint']`, which will be appended to the API base URL (no
      *      leading slash). The pattern may contain colon-prepended references
@@ -101,8 +101,9 @@ class OnAPI
     private function unpackEndpoint($endpoint)
     {
         if (is_array($endpoint)) {
+            reset($endpoint);
             $this->pattern = key($endpoint);
-            $this->uri = $endpoint[$pattern];
+            $this->uri = $endpoint[$this->pattern];
         } else {
             $this->pattern = $endpoint;
             $this->uri = $endpoint;
@@ -111,7 +112,7 @@ class OnAPI
 
     /**
      * Make a GET API request
-     * @param string|array[string]string $endpoint Either the endpoint to
+     * @param string|string[] $endpoint Either the endpoint to
      *      request or an associative array of the form `['pattern' =>
      *      'endpoint']`, which will be appended to the API base URL (no
      *      leading slash). The pattern may contain colon-prepended references
@@ -119,15 +120,15 @@ class OnAPI
      *      present, for example: `'foo/bar/:BarId'` might become
      *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
      *      call and contained the value `12`.
-     * @param string[]|array[string]string $collect (Optional, defaults to
+     * @param false|string[] $collect (Optional, defaults to
      *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
      *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
      *      'storedFieldNameB']`
-     * @param array[string]string $parameters (Optional, defaults to
+     * @param string[] $parameters (Optional, defaults to
      *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
      *      to the endpoint with the request of the form `['parameter' =>
      *      'value']`
-     * @return array[string]string An associative array describing the API
+     * @return string[] An associative array describing the API
      *      endpoint requested and the output received or an explanation of
      *      which required fields were missing, thus preventing the actual
      *      request from being made
@@ -177,10 +178,10 @@ class OnAPI
     /**
      * Make a GET API request if the required fields have been successfully
      * aggregated
-     * @param string[]|array[string]string $requiredFields Array of required
+     * @param string[] $requiredFields Array of required
      *      fields of the form `['fieldNameA', 'fieldNameB' =>
      *      'parameterNameB']`
-     * @param string|array[string]string $endpoint Either the endpoint to
+     * @param string|string[] $endpoint Either the endpoint to
      *      request or an associative array of the form `['pattern' =>
      *      'endpoint']`, which will be appended to the API base URL (no
      *      leading slash). The pattern may contain colon-prepended references
@@ -188,15 +189,15 @@ class OnAPI
      *      present, for example: `'foo/bar/:BarId'` might become
      *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
      *      call and contained the value `12`.
-     * @param string[]|array[string]string $collect (Optional, defaults to
+     * @param false|string[] $collect (Optional, defaults to
      *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
      *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
      *      'storedFieldNameB']`
-     * @param array[string]string $parameters (Optional, defaults to
+     * @param string[] $parameters (Optional, defaults to
      *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
      *      to the endpoint with the request of the form `['parameter' =>
      *      'value']`
-     * @return array[string]string An associative array describing the API
+     * @return string[] An associative array describing the API
      *      endpoint requested and the output received or an explanation of
      *      which required fields were missing, thus preventing the actual
      *      request from being made
@@ -237,7 +238,7 @@ class OnAPI
 
     /**
      * Make a GET API request if a user ID has been aggregated
-     * @param string|array[string]string $endpoint Either the endpoint to
+     * @param string|string[] $endpoint Either the endpoint to
      *      request or an associative array of the form `['pattern' =>
      *      'endpoint']`, which will be appended to the API base URL (no
      *      leading slash). The pattern may contain colon-prepended references
@@ -245,15 +246,15 @@ class OnAPI
      *      present, for example: `'foo/bar/:BarId'` might become
      *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
      *      call and contained the value `12`.
-     * @param string[]|array[string]string $collect (Optional, defaults to
+     * @param false|string[] $collect (Optional, defaults to
      *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
      *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
      *      'storedFieldNameB']`
-     * @param array[string]string $parameters (Optional, defaults to
+     * @param string[] $parameters (Optional, defaults to
      *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
      *      to the endpoint with the request of the form `['parameter' =>
      *      'value']`
-     * @return array[string]string An associative array describing the API
+     * @return string[] An associative array describing the API
      *      endpoint requested and the output received or an explanation of
      *      which required fields were missing, thus preventing the actual
      *      request from being made
