@@ -28,10 +28,10 @@ class OnAPI
     const COLLECT_NOTHING = false;
 
     /**
-     * API base URL
+     * API base URI
      * @var string
      */
-    private $api;
+    private $baseApiUrl;
 
     /**
      * Utility object to make JSON output pretty
@@ -40,25 +40,45 @@ class OnAPI
     private $jsonPretty;
 
     /**
+     * API access token (capitalized to be consistent with ON API results)
+     * @var string
+     */
+    public $Token;
+
+    /**
+     * The pattern describing the endpoint generically
+     * @var string
+     */
+    private $pattern;
+
+    /**
+     * The actual relative URI of the endpoint (based on `$pattern`)
+     * @var string
+     */
+    private $uri;
+
+    /**
      * Construct a new OnAPI object
      * @param string $api API base URL with no trailing slash (e.g.
      *      `https://our-school.myschoolapp.com/api`)
      */
     public function __construct($api)
     {
-        $this->api = $api;
+        $this->baseApiUrl = $api;
         $this->jsonPretty = new JsonPretty();
     }
 
     /**
      * Authenticate against the API, storiing both a 20-minute token and the
      * user ID of the user being authenticated
-     * @param string[] $parameters An associative array of parameters with
-     *      which to authenticate the current user (presumably at least
-     *      `['username' => 'foo@bar.baz', 'password' => '2m4ny53cr375']` or
-     *      equivalent information)
-     * @return string[] An associative array describing the API endpoint
-     *      requested and the output received
+     * @param \array[string]string $parameters An associative array of
+     *      parameters with which to authenticate the current user (presumably
+     *      at least `['username' => 'foo@bar.baz', 'password' =>
+     *      '2m4ny53cr375']` or equivalent information)
+     * @return array[string]string An associative array describing the API
+     *      endpoint requested and the output received or an explanation of
+     *      which required fields were missing, thus preventing the actual
+     *      request from being made
      * @uses get() get()
      */
     public function authenticate($parameters)
@@ -67,18 +87,50 @@ class OnAPI
     }
 
     /**
+     * Unpack an endpoint description into its pattern and URI components
+     * @param string|array[string]string $endpoint Either the endpoint to
+     *      request or an associative array of the form `['pattern' =>
+     *      'endpoint']`, which will be appended to the API base URL (no
+     *      leading slash). The pattern may contain colon-prepended references
+     *      to required fields, which will be replaced by aggregated values if
+     *      present, for example: `'foo/bar/:BarId'` might become
+     *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
+     *      call and contained the value `12`.
+     * @return void `$pattern` and `$uri` fields are updated
+     */
+    private function unpackEndpoint($endpoint)
+    {
+        if (is_array($endpoint)) {
+            $this->pattern = key($endpoint);
+            $this->uri = $endpoint[$pattern];
+        } else {
+            $this->pattern = $endpoint;
+            $this->uri = $endpoint;
+        }
+    }
+
+    /**
      * Make a GET API request
-     * @param string|string[] $endpoint Either the endpoint to request or an
-     *      associative array of the form `['pattern' => 'endpoint']`, which
-     *      will be appended to the API base URL (no leading slash).
-     * @param string[] $collect (Optional, defaults to `COLLECT_NOTHING`) Array
-     *      of output fields to be aggregated for future use of the form
-     *      `['fieldNameA', 'outputFieldNameB' => 'storedFieldNameB']`
-     * @param string[] $parameters (Optional, defaults to `NO_PARAMETERS`)
-     *      Associative array of URL parameters to be passed to the endpoint
-     *      with the request of the form `['parameter' => 'value']`
-     * @return string[] An associative array describing the API endpoint
-     *      requested and the output received
+     * @param string|array[string]string $endpoint Either the endpoint to
+     *      request or an associative array of the form `['pattern' =>
+     *      'endpoint']`, which will be appended to the API base URL (no
+     *      leading slash). The pattern may contain colon-prepended references
+     *      to required fields, which will be replaced by aggregated values if
+     *      present, for example: `'foo/bar/:BarId'` might become
+     *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
+     *      call and contained the value `12`.
+     * @param string[]|array[string]string $collect (Optional, defaults to
+     *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
+     *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
+     *      'storedFieldNameB']`
+     * @param array[string]string $parameters (Optional, defaults to
+     *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
+     *      to the endpoint with the request of the form `['parameter' =>
+     *      'value']`
+     * @return array[string]string An associative array describing the API
+     *      endpoint requested and the output received or an explanation of
+     *      which required fields were missing, thus preventing the actual
+     *      request from being made
      */
     public function get(
         $endpoint,
@@ -90,18 +142,11 @@ class OnAPI
             $parameters['t'] = $this->Token;
         }
 
-        /* unpack the endpoint information */
-        if (is_array($endpoint)) {
-            $pattern = key($endpoint);
-            $uri = $endpoint[$pattern];
-        } else {
-            $pattern = $endpoint;
-            $uri = $endpoint;
-        }
+        $this->unpackEndpoint($endpoint);
 
         /* generate complete URI and make API request */
-        $uri = "{$this->api}/{$uri}?" . http_build_query($parameters);
-        $response = Request::get($uri)->send();
+        $this->uri = "{$this->baseApiUrl}/{$this->uri}?" . http_build_query($parameters);
+        $response = Request::get($this->uri)->send();
 
         /* retain any requested information (if present) */
         if ($collect) {
@@ -118,37 +163,43 @@ class OnAPI
         }
 
         /* generate report on this endpoint */
+        $output = "";
         if (empty($response->body->ErrorType)) {
-            return [$pattern => $this->jsonPretty->prettify($response->raw_body)];
+            $output = $this->jsonPretty->prettify($response->raw_body);
         } elseif ($response->body->ErrorType === "INVALID_AUTHORIZATION") {
-            return [$pattern => 'Unavailable to this user'];
+            $output = "Error {$response->code}: this user is not authorized to access this endpoint";
         } else {
-            return [$pattern => $this->jsonPretty->prettify($response->raw_body)];
+            $output = $this->jsonPretty->prettify($response->raw_body);
         }
+        return [$this->pattern => $output];
     }
 
     /**
      * Make a GET API request if the required fields have been successfully
      * aggregated
-     * @param string[] $requiredFields Array of required fields of the form
-     *      `['fieldNameA', 'fieldNameB' => 'parameterNameB']`
-     * @param string|string[] $endpoint Either the endpoint to request or an
-     *      associative array of the form `['pattern' => 'endpoint']`, which
-     *      will be appended to the API base URL (no leading slash). The pattern
-     *      may contain colon-prepended references to required fields, which
-     *      will be replaced by aggregated values if present, for example:
-     *      `'foo/bar/:BarId'` might become `'foo/bar/12'` if `BarId` had been
-     *      aggregated during a previous call and contained the value `12`.
-     * @param string[] $collect (Optional, defaults to `COLLECT_NOTHING`) Array
-     *      of output fields to be aggregated for future use of the form
-     *      `['fieldNameA', 'outputFieldNameB' => 'storedFieldNameB']`
-     * @param string[] $parameters (Optional, defaults to `NO_PARAMETERS`)
-     *      Associative array of URL parameters to be passed to the endpoint
-     *      with the request of the form `['parameter' => 'value']`
-     * @return string[] An associative array describing the API endpoint
-     *      requested and the output received or an explanation of which
-     *      required fields were missing, thus preventing the actual request
-     *      from being made
+     * @param string[]|array[string]string $requiredFields Array of required
+     *      fields of the form `['fieldNameA', 'fieldNameB' =>
+     *      'parameterNameB']`
+     * @param string|array[string]string $endpoint Either the endpoint to
+     *      request or an associative array of the form `['pattern' =>
+     *      'endpoint']`, which will be appended to the API base URL (no
+     *      leading slash). The pattern may contain colon-prepended references
+     *      to required fields, which will be replaced by aggregated values if
+     *      present, for example: `'foo/bar/:BarId'` might become
+     *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
+     *      call and contained the value `12`.
+     * @param string[]|array[string]string $collect (Optional, defaults to
+     *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
+     *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
+     *      'storedFieldNameB']`
+     * @param array[string]string $parameters (Optional, defaults to
+     *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
+     *      to the endpoint with the request of the form `['parameter' =>
+     *      'value']`
+     * @return array[string]string An associative array describing the API
+     *      endpoint requested and the output received or an explanation of
+     *      which required fields were missing, thus preventing the actual
+     *      request from being made
      */
     public function getIf(
         $requiredFields,
@@ -169,44 +220,43 @@ class OnAPI
                 if (strpos($endpoint, ":{$field}") === false) {
                     $parameters[$parameter] = $this->$field;
                 } else {
-                    if (is_array($endpoint)) {
-                        $pattern = key($endpoint);
-                        $uri = $endpoint[$pattern];
-                    } else {
-                        $pattern = $endpoint;
-                        $uri = $endpoint;
-                    }
-                    $endpoint = [$pattern => str_replace(":{$field}", $this->$field, $uri)];
+                    $this->unpackEndpoint($endpoint);
+                    $endpoint = [$this->pattern => str_replace(":{$field}", $this->$field, $this->uri)];
                 }
             }
         }
 
         /* generate report on this test */
         if (!empty($missingFields)) {
-            return [$endpoint => 'Unavailable without ' . implode(', ', $missingFields)];
+            $this->unpackEndpoint($endpoint);
+            return [$this->pattern => 'No request made because required ' .
+                'information is missing: ' . implode(', ', $missingFields)];
         }
         return $this->get($endpoint, $collect, $parameters);
     }
 
     /**
      * Make a GET API request if a user ID has been aggregated
-     * @param string|string[] $endpoint Either the endpoint to request or an
-     *      associative array of the form `['pattern' => 'endpoint']`, which
-     *      will be appended to the API base URL (no leading slash). The pattern
-     *      may contain colon-prepended references to required fields, which
-     *      will be replaced by aggregated values if present, for example:
-     *      `'foo/bar/:BarId'` might become `'foo/bar/12'` if `BarId` had been
-     *      aggregated during a previous call and contained the value `12`.
-     * @param string[] $collect (Optional, defaults to `COLLECT_NOTHING`) Array
-     *      of output fields to be aggregated for future use of the form
-     *      `['fieldNameA', 'outputFieldNameB' => 'storedFieldNameB']`
-     * @param string[] $parameters (Optional, defaults to `NO_PARAMETERS`)
-     *      Associative array of URL parameters to be passed to the endpoint
-     *      with the request of the form `['parameter' => 'value']`
-     * @return string[] An associative array describing the API endpoint
-     *      requested and the output received or an explanation of which
-     *      required fields were missing, thus preventing the actual request
-     *      from being made
+     * @param string|array[string]string $endpoint Either the endpoint to
+     *      request or an associative array of the form `['pattern' =>
+     *      'endpoint']`, which will be appended to the API base URL (no
+     *      leading slash). The pattern may contain colon-prepended references
+     *      to required fields, which will be replaced by aggregated values if
+     *      present, for example: `'foo/bar/:BarId'` might become
+     *      `'foo/bar/12'` if `BarId` had been aggregated during a previous
+     *      call and contained the value `12`.
+     * @param string[]|array[string]string $collect (Optional, defaults to
+     *      `COLLECT_NOTHING`) Array of output fields to be aggregated for
+     *      future use of the form `['fieldNameA', 'outputFieldNameB' =>
+     *      'storedFieldNameB']`
+     * @param array[string]string $parameters (Optional, defaults to
+     *      `NO_PARAMETERS`) Associative array of URL parameters to be passed
+     *      to the endpoint with the request of the form `['parameter' =>
+     *      'value']`
+     * @return array[string]string An associative array describing the API
+     *      endpoint requested and the output received or an explanation of
+     *      which required fields were missing, thus preventing the actual
+     *      request from being made
      */
     public function getIfUser($endpoint, $collect = self::COLLECT_NOTHING, $parameters = self::NO_PARAMETERS)
     {
